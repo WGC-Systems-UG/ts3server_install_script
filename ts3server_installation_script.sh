@@ -4,6 +4,7 @@
 #Erstellt am: 22-07-2023
 #Aktualisierung vom: 22-07-2023
 #Beschreibung: Installation eines Teamspeak³ Servers getestet unter folgenden Systemen: Debian/Ubuntu/RockyLinux
+
 if ! which sudo >/dev/null; then
     echo "Bitte installieren Sie sudo manuell und führen Sie das Skript erneut aus."
     exit 1
