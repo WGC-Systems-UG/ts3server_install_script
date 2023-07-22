@@ -399,6 +399,8 @@ sleep 10
 kill $pid
 chown "$USERNAME":"$USERNAME" "$INSTALL_PATH" -R
 systemctl --quiet enable ts3server.service
+rm /dev/shm/7gbhujb54g8z9hu43jre8
+sleep 2
 systemctl start ts3server.service
 sleep 5
 
