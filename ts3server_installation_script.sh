@@ -16,20 +16,20 @@ if ! which wget >/dev/null; then
 
     case $OS in
         "Linux")
-            LINUX_DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
+            LINUX_DISTRO=$(cat /etc/os-release | grep NAME | head -n1 | cut -d'=' -f2 | tr -d '"')
 
-            if [[ $LINUX_DISTRO =~ "Ubuntu" ]] || [[ $LINUX_DISTRO =~ "Debian" ]]; then
+            if [[ $LINUX_DISTRO == *"Ubuntu"* ]] || [[ $LINUX_DISTRO == *"Debian"* ]]; then
                 INSTALL_CMD="sudo apt-get install wget"
-            elif [[ $LINUX_DISTRO =~ "Fedora" ]]; then
+            elif [[ $LINUX_DISTRO =~ *"Fedora"* ]]; then
                 INSTALL_CMD="sudo dnf install wget"
-            elif [[ $LINUX_DISTRO =~ "CentOS" ]] || [[ $LINUX_DISTRO =~ "RHEL" ]] || [[ $LINUX_DISTRO =~ "Rocky Linux" ]]; then
+            elif [[ $LINUX_DISTRO =~ *"CentOS"* ]] || [[ $LINUX_DISTRO =~ *"RHEL"* ]] || [[ $LINUX_DISTRO =~ *"Rocky Linux"* ]]; then
                 INSTALL_CMD="sudo yum install wget"
             else
                 echo "Ihr Linux-Distribution wird derzeit nicht unterstützt. Bitte installieren Sie wget manuell."
                 exit 1
             fi
             ;;
-        "Darwin")
+        *"Darwin"*)
             INSTALL_CMD="brew install wget"
             ;;
         *)
@@ -56,20 +56,20 @@ if ! which tar >/dev/null; then
 
     case $OS in
         "Linux")
-            LINUX_DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
+            LINUX_DISTRO=$(cat /etc/os-release | grep NAME | head -n1 | cut -d'=' -f2 | tr -d '"')
 
-            if [[ $LINUX_DISTRO =~ "Ubuntu" ]] || [[ $LINUX_DISTRO =~ "Debian" ]]; then
+            if [[ $LINUX_DISTRO == *"Ubuntu"* ]] || [[ $LINUX_DISTRO == *"Debian"* ]]; then
                 INSTALL_CMD="sudo apt-get install tar"
-            elif [[ $LINUX_DISTRO =~ "Fedora" ]]; then
+            elif [[ $LINUX_DISTRO =~ *"Fedora"* ]]; then
                 INSTALL_CMD="sudo dnf install tar"
-            elif [[ $LINUX_DISTRO =~ "CentOS" ]] || [[ $LINUX_DISTRO =~ "RHEL" ]] || [[ $LINUX_DISTRO =~ "Rocky Linux" ]]; then
+            elif [[ $LINUX_DISTRO =~ *"CentOS"* ]] || [[ $LINUX_DISTRO =~ *"RHEL"* ]] || [[ $LINUX_DISTRO =~ *"Rocky Linux"* ]]; then
                 INSTALL_CMD="sudo yum install tar"
             else
                 echo "Ihr Linux-Distribution wird derzeit nicht unterstützt. Bitte installieren Sie tar manuell."
                 exit 1
             fi
             ;;
-        "Darwin")
+        *"Darwin"*)
             INSTALL_CMD="brew install tar"
             ;;
         *)
@@ -96,20 +96,20 @@ if ! which bzip2 >/dev/null; then
 
     case $OS in
         "Linux")
-            LINUX_DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
+            LINUX_DISTRO=$(cat /etc/os-release | grep NAME | head -n1 | cut -d'=' -f2 | tr -d '"')
 
-            if [[ $LINUX_DISTRO =~ "Ubuntu" ]] || [[ $LINUX_DISTRO =~ "Debian" ]]; then
+            if [[ $LINUX_DISTRO =~ *"Ubuntu"* ]] || [[ $LINUX_DISTRO =~ *"Debian"* ]]; then
                 INSTALL_CMD="sudo apt-get install bzip2"
-            elif [[ $LINUX_DISTRO =~ "Fedora" ]]; then
+            elif [[ $LINUX_DISTRO =~ *"Fedora"* ]]; then
                 INSTALL_CMD="sudo dnf install bzip2"
-            elif [[ $LINUX_DISTRO =~ "CentOS" ]] || [[ $LINUX_DISTRO =~ "RHEL" ]] || [[ $LINUX_DISTRO =~ "Rocky Linux" ]]; then
+            elif [[ $LINUX_DISTRO =~ *"CentOS"* ]] || [[ $LINUX_DISTRO =~ *"RHEL"* ]] || [[ $LINUX_DISTRO =~ *"Rocky Linux"* ]]; then
                 INSTALL_CMD="sudo yum install bzip2"
             else
                 echo "Ihr Linux-Distribution wird derzeit nicht unterstützt. Bitte installieren Sie bzip2 manuell."
                 exit 1
             fi
             ;;
-        "Darwin")
+        *"Darwin"*)
             INSTALL_CMD="brew install bzip2"
             ;;
         *)
@@ -269,22 +269,22 @@ fi
 
 echo "Ihr Passwort wurde erfolgreich eingegeben und bestätigt."
 
-if grep -iq 'NAME="Ubuntu"' /etc/os-release; then
+if grep -iq 'NAME="*.ubuntu.*"' /etc/os-release; then
     adduser --system --group --disabled-login --disabled-password --no-create-home "$USERNAME" >/dev/null 2>&1
 
-elif grep -iq 'NAME="Debian"' /etc/os-release; then
+elif grep -iq 'NAME=.*debian.*' /etc/os-release; then
     adduser --system --group --disabled-login --disabled-password --no-create-home "$USERNAME" >/dev/null 2>&1
 
-elif grep -iq 'NAME="CentOS"' /etc/os-release; then
+elif grep -iq 'NAME="*.centos.*"' /etc/os-release; then
     useradd -r -s /sbin/nologin "$USERNAME" && passwd -l "$USERNAME" >/dev/null 2>&1
 
-elif grep -iq 'NAME="Fedora"' /etc/os-release; then
+elif grep -iq 'NAME="*.fedora.*"' /etc/os-release; then
     useradd -r -s /sbin/nologin "$USERNAME" && passwd -l "$USERNAME" >/dev/null 2>&1
 
-elif grep -iq 'NAME="Rocky Linux"' /etc/os-release; then
+elif grep -iq 'NAME="*.rocky linux.*"' /etc/os-release; then
     useradd -r -s /sbin/nologin "$USERNAME" && passwd -l "$USERNAME" >/dev/null 2>&1
 
-elif grep -iq 'NAME="RHEL"' /etc/os-release; then
+elif grep -iq 'NAME="*.rhel.*"' /etc/os-release; then
     useradd -r -s /sbin/nologin "$USERNAME" && passwd -l "$USERNAME" >/dev/null 2>&1
 else
     echo "Unbekanntes Betriebssystem."
